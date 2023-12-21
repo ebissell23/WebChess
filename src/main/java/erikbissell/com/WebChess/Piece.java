@@ -59,6 +59,10 @@ public abstract class Piece {
     public void setNickName(char nickName){
         this.nickName = nickName;
     }
+    public int getPieceValue(){
+
+        return -1;
+    }
 
 
 }

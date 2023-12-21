@@ -85,6 +85,7 @@ public class Chessboard {
                 if(board[destRow][destCol] instanceof King){
                     System.out.println("GameOver!");
                     gameOver();
+                    return true;
                 }
                 board[destRow][destCol] = board[sourceRow][sourceCol];
                 board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
@@ -97,6 +98,8 @@ public class Chessboard {
         }
     }
     public void gameOver(){
+        initializeEmptyBoard();
+        initializeStartingBoard();
 
     }
     public boolean checkEnPassant(int sourceRow, int sourceCol, int destRow, int destCol){
