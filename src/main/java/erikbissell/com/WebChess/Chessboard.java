@@ -1,11 +1,15 @@
 package erikbissell.com.WebChess;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 
 public class Chessboard {
 
     private Piece[][] board;
+    private boolean isWhiteTurn = true;
+    private EnPassantExplorerAI engine = new EnPassantExplorerAI();
     ArrayList<MoveRequest> moveList = new ArrayList<MoveRequest>();
     public Chessboard(){
         board = new Piece[8][8];
@@ -51,7 +55,12 @@ public class Chessboard {
         return board;
     }
     public boolean movePiece(int sourceRow, int sourceCol, int destRow, int destCol){
-        
+        //System.out.println("Eval before move: ");
+        engine.evaluate(this);
+       // List<MoveRequest> moves = board[sourceRow][sourceCol].getPossibleMoves(board);
+        //for(int i = 0; i < moves.size(); i++){
+          //  moves.get(i).printMove();
+       // }
         //TODO: check for en passant
         if(checkEnPassant(sourceRow, sourceCol, destRow, destCol)){
 
@@ -67,6 +76,8 @@ public class Chessboard {
                 board[destRow][destCol] = board[sourceRow][sourceCol];
                 board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
                 moveList.add(new MoveRequest(sourceRow, sourceCol, destRow, destCol));
+                //engine.evaluate(this);
+                changeTurn();
                 return true;
             }
             else{
@@ -89,6 +100,9 @@ public class Chessboard {
                 }
                 board[destRow][destCol] = board[sourceRow][sourceCol];
                 board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
+                moveList.add(new MoveRequest(sourceRow, sourceCol, destRow, destCol));
+                //engine.evaluate(this);
+                changeTurn();
                 return true;
             }
             else{
@@ -102,8 +116,34 @@ public class Chessboard {
         initializeStartingBoard();
 
     }
+    public void changeTurn(){
+        isWhiteTurn = !isWhiteTurn;
+    }
+    public boolean isWhiteTurn(){
+        return isWhiteTurn;
+    }
     public boolean checkEnPassant(int sourceRow, int sourceCol, int destRow, int destCol){
         return false;
+    }
+    public List<MoveRequest> possibleMoves(){
+        List<MoveRequest> moves = new ArrayList<>();
+        //iterate through each piece. Add its possible moves to the list of possible moves
+        System.out.println("\n isWhiteTurn = " + isWhiteTurn());
+        for(int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+               // System.out.println(board[i][j].getNickName());
+                if ( (board[i][j].isWhite() == isWhiteTurn()) && (! (board[i][j] instanceof EmptySquare) ) ){
+                    List<MoveRequest> pieceMoves = board[i][j].getPossibleMoves(board);
+                    System.out.println("Piece: " + board[i][j].getNickName() + " PieceMoves.size()" + pieceMoves.size());
+                    for (int k = 0; k < pieceMoves.size(); k++){
+                        moves.add(pieceMoves.get(k));
+                    }
+
+                }
+            }
+        }
+
+        return moves;
     }
     public void printBoard(){
         for (int i = 0; i < 8; i ++){

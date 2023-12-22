@@ -1,5 +1,8 @@
 package erikbissell.com.WebChess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Bishop extends Piece{
@@ -81,6 +84,43 @@ public class Bishop extends Piece{
     public String toString(){
         return "Bishop";
     }
+
+    @Override
+    public int getPieceValue(){
+        int [][] whiteValueAdjustment =
+        {   
+            {-20,-10,-10,-10,-10,-10,-10,-20},
+            {-10,  0,  0,  0,  0,  0,  0,-10},
+            {-10,  0,  5, 10, 10,  5,  0,-10},
+            {-10,  5,  5, 10, 10,  5,  5,-10},
+            {-10,  0, 10, 10, 10, 10,  0,-10},
+            {-10, 10, 10, 10, 10, 10, 10,-10},
+            {-10,  5,  0,  0,  0,  0,  5,-10},
+            {-20,-10,-10,-10,-10,-10,-10,-20}
+        };
+
+        int [][] blackValueAdjustment =
+        {
+            {-20,-10,-10,-10,-10,-10,-10,-20},
+            {-10,  5,  0,  0,  0,  0,  5,-10},
+            {-10, 10, 10, 10, 10, 10, 10,-10},
+            {-10,  0, 10, 10, 10, 10,  0,-10},
+            {-10,  5,  5, 10, 10,  5,  5,-10},
+            {-10,  0,  5, 10, 10,  5,  0,-10},
+            {-10,  0,  0,  0,  0,  0,  0,-10},
+            {-20,-10,-10,-10,-10,-10,-10,-20}
+        };
+        if(isWhite()){
+            return 320 + whiteValueAdjustment[getRank()][getFile()];
+        }
+        return 320 + blackValueAdjustment[getRank()][getFile()];
+    }
    
+    @Override 
+    public List<MoveRequest> getPossibleMoves(Piece[][] board){
+        List<MoveRequest> moves = new ArrayList<>();
+
+        return moves;
+    }
 
 }

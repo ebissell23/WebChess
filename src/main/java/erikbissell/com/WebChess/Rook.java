@@ -124,5 +124,37 @@ public class Rook extends Piece {
     public String toString(){
         return "Rook";
     }
+    @Override
+    public int getPieceValue(){
+        int [][] whiteValueAdjustment =
+        {
+            {0,  0,  0,  0,  0,  0,  0,  0,},
+            {5, 10, 10, 10, 10, 10, 10,  5},
+            {-5,  0,  0,  0,  0,  0,  0, -5},
+            {-5,  0,  0,  0,  0,  0,  0, -5},
+            {-5,  0,  0,  0,  0,  0,  0, -5},
+            {-5,  0,  0,  0,  0,  0,  0, -5},
+            {-5,  0,  0,  0,  0,  0,  0, -5},
+            {0,  0,  0,  5,  5,  0,  0,  0}            
+        };
+
+        int [][] blackValueAdjustment =
+        {
+            {  0,  0,  0,  5,  5,  0,  0,  0},
+            { -5,  0,  0,  0,  0,  0,  0, -5},
+            { -5,  0,  0,  0,  0,  0,  0, -5},
+            { -5,  0,  0,  0,  0,  0,  0, -5},
+            { -5,  0,  0,  0,  0,  0,  0, -5},
+            { -5,  0,  0,  0,  0,  0,  0, -5},
+            { 5, 10, 10, 10, 10, 10, 10,  5},
+            { 0,  0,  0,  0,  0,  0,  0,  0}
+          
+        };
+        if(isWhite()){
+            return 500 + whiteValueAdjustment[getRank()][getFile()];
+        }
+        return 500 + blackValueAdjustment[getRank()][getFile()];
+
+    }
 
 }

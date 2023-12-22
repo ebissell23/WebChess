@@ -179,5 +179,37 @@ public class Queen extends Piece {
     public String toString(){
         return "Queen";
     }
+
+    @Override
+    public int getPieceValue(){
+        int [][] whiteValueAdjustment =
+        {
+            {-20,-10,-10, -5, -5,-10,-10,-20},
+            { -10,  0,  0,  0,  0,  0,  0,-10},
+            {-10,  0,  5,  5,  5,  5,  0,-10},
+            {-5,  0,  5,  5,  5,  5,  0, -5},
+            { 0,  0,  5,  5,  5,  5,  0, -5},
+            {-10,  5,  5,  5,  5,  5,  0,-10},
+            {-10,  0,  5,  0,  0,  0,  0,-10},
+            {-20,-10,-10, -5, -5,-10,-10,-20}
+        };
+
+        int [][] blackValueAdjustment =
+        {
+            {-20,-10,-10, -5, -5,-10,-10,-20},
+            {-10,  0,  5,  0,  0,  0,  0,-10},
+            {-10,  5,  5,  5,  5,  5,  0,-10},
+            {0,  0,  5,  5,  5,  5,  0, -5},
+            {-5,  0,  5,  5,  5,  5,  0, -5},
+            {-10,  0,  5,  5,  5,  5,  0,-10},
+            {-10,  0,  0,  0,  0,  0,  0,-10},
+            { -20,-10,-10, -5, -5,-10,-10,-20}     
+        };
+        if(isWhite()){
+            return 900 + whiteValueAdjustment[getRank()][getFile()];
+        }
+        return 900 + blackValueAdjustment[getRank()][getFile()];
+
+    }
     
 }

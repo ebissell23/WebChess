@@ -1,4 +1,7 @@
 package erikbissell.com.WebChess;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -60,8 +63,17 @@ public abstract class Piece {
         this.nickName = nickName;
     }
     public int getPieceValue(){
-
-        return -1;
+        return 0;
+    }
+    public List<MoveRequest> getPossibleMoves(Piece[][] board){
+        List<MoveRequest> moves = new ArrayList<>();
+        return moves;
+    }
+    public boolean outOfBounds(int newRank, int newFile){
+        if(newRank > 7 || newRank < 0 || newFile > 7 || newFile < 0){
+            return true;
+        }
+        return false;
     }
 
 

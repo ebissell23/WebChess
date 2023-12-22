@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ChessController {
    
     private Chessboard chessboard;
-
     public ChessController(){
         this.chessboard = new Chessboard();
     }

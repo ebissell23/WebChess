@@ -25,5 +25,8 @@ public class MoveRequest {
     public int getDestCol(){
         return destCol;
     }
+    public void printMove(){
+        System.out.println("sourceRow: " + sourceRow + " sourceCol: " + sourceCol + " destRow: " + destRow + " destCol: " + destCol);
+    }
     
 }
