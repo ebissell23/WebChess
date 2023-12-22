@@ -45,6 +45,9 @@ public class Bishop extends Piece{
         return false;
     }
     public boolean isValidCapture(int newRank, int newFile, Piece[][] board){
+        if(board[newRank][newFile].isWhite() == isWhite()){
+            return false;
+        }
         int rankDifference = Math.abs(newRank - getRank());
         int fileDifference = Math.abs(newFile - getFile());
         if(rankDifference != fileDifference){
@@ -119,7 +122,36 @@ public class Bishop extends Piece{
     @Override 
     public List<MoveRequest> getPossibleMoves(Piece[][] board){
         List<MoveRequest> moves = new ArrayList<>();
+        int[] dRank = {1,1,-1,-1};
+        int[] dFile = {1,-1,1,-1};
+        for(int i = 0; i < 4; i++){
 
+            int newRank = getRank() + dRank[i];
+            int newFile = getFile() + dFile[i];
+            boolean canContinue = true;
+            while (canContinue){
+                if(outOfBounds(newRank,newFile)){
+                    canContinue = false;
+                    continue;
+                }
+                if(board[newRank][newFile] instanceof EmptySquare){
+                    if(isValidMove(newRank, newFile, board)){
+                        moves.add(new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    }
+                    else{
+                        canContinue = false;
+                    }
+                }
+                else{
+                    if(isValidCapture(newRank, newFile, board)){
+                        moves.add(new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    }
+                    canContinue = false;
+                }
+                newRank = newRank + dRank[i];
+                newFile = newFile + dFile[i];
+            }
+        }
         return moves;
     }
 
