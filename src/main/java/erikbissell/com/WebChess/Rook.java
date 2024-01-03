@@ -1,6 +1,8 @@
 package erikbissell.com.WebChess;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Rook extends Piece {
 
@@ -55,6 +57,9 @@ public class Rook extends Piece {
         return false;
     }
     public boolean isValidCapture(int newRank, int newFile, Piece[][] board){
+        if(board[newRank][newFile].isWhite() == isWhite()){
+            return false;
+        }
         int rankDifference = newRank - getRank();
         int fileDifference = newFile - getFile();
         if ( (Math.abs(rankDifference) != 0) && (Math.abs(fileDifference) != 0)){ //Can't move both ways 
@@ -155,6 +160,38 @@ public class Rook extends Piece {
         }
         return 500 + blackValueAdjustment[getRank()][getFile()];
 
+    }
+    public List<MoveRequest> getPossibleMoves(Piece[][] board){
+        List<MoveRequest> moves = new ArrayList<>();
+        int[] dRank = {1,-1,0,0};
+        int[] dFile = {0,0,1,-1};
+        
+        for (int i = 0; i < 4; i++){
+            int newRank = getRank() + dRank[i];
+            int newFile = getFile() + dFile[i];
+            boolean canContinue = true;
+            while(canContinue){
+                if(outOfBounds(newRank, newFile)){
+                    canContinue = false;
+                }
+                else if( board[newRank][newFile] instanceof EmptySquare){
+                    if(isValidMove(newRank, newFile, board)){
+                        moves.add(new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    }
+                    else{
+                        canContinue = false;
+                    }
+                }
+                else if (isValidCapture(newRank, newFile, board)){
+                    moves.add( new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    canContinue = false;
+                }
+                newRank = newRank + dRank[i];
+                newFile = newFile + dFile[i];
+            }
+        }
+
+        return moves;
     }
 
 }
