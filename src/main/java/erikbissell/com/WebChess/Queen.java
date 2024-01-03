@@ -1,5 +1,6 @@
 package erikbissell.com.WebChess;
-
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Queen extends Piece {
@@ -38,21 +39,23 @@ public class Queen extends Piece {
     }
 
     public boolean rookIsValidCapture(int newRank,int newFile, Piece [][]board){
-
+        if(board[newRank][newFile].isWhite() == isWhite()){
+            return false;
+        }
         int rankDifference = newRank - getRank();
         int fileDifference = newFile - getFile();
         if ( (Math.abs(rankDifference) != 0) && (Math.abs(fileDifference) != 0)){ //Can't move both ways 
-            System.out.println("can't move both ways");
+            //System.out.println("can't move both ways");
             return false;
         }
         if( (Math.abs(rankDifference) == 1) | (Math.abs(fileDifference) == 1)){ //only one space away 
-            System.out.println("Capturing one space away");
+            //System.out.println("Capturing one space away");
             return true;
         }
         int step = 0;
         if(fileDifference == 0){
             if ((getFile() == newFile) && (getRank() != newRank)){
-                System.out.println("Rook vertical");
+              //  System.out.println("Rook vertical");
                 if(getRank() > newRank){
                     step = -1;
                 }
@@ -61,7 +64,7 @@ public class Queen extends Piece {
                 }
                 for (int i = getRank() + step; i != newRank; i+=step){
                     if( !(board[i][newFile] instanceof EmptySquare)){
-                        System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                      //  System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                         return false;
                     }
                 }
@@ -71,7 +74,7 @@ public class Queen extends Piece {
         }
         else if(rankDifference == 0){
            if ((getFile() == newFile) && (getRank() != newRank)){
-                System.out.println("Rook vertical");
+               // System.out.println("Rook vertical");
                 if(getRank() > newRank){
                     step = -1;
                 }
@@ -80,7 +83,7 @@ public class Queen extends Piece {
                 }
                 for (int i = getRank() + step; i != newRank; i+=step){
                     if( !(board[i][newFile] instanceof EmptySquare)){
-                        System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                       // System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                         return false;
                     }
                 }
@@ -103,13 +106,16 @@ public class Queen extends Piece {
             int intermediateRank = getRank() + (i * rankDirection );
             int intermediateFile = getFile() + (i * fileDirection);
             if ( !(board[intermediateRank][intermediateFile] instanceof EmptySquare)){
-                System.out.println("No Empty Square at Rank: " + intermediateRank + " File: " + intermediateFile);
+               // System.out.println("No Empty Square at Rank: " + intermediateRank + " File: " + intermediateFile);
                 return false;
             }
         }
         return true;
     }
     public boolean bishopIsValidCapture(int newRank, int newFile, Piece[][] board){
+        if(board[newRank][newFile].isWhite() == isWhite()){
+            return false;
+        }
         int rankDifference = Math.abs(newRank - getRank());
         int fileDifference = Math.abs(newFile - getFile());
         if(rankDifference != fileDifference){
@@ -125,18 +131,18 @@ public class Queen extends Piece {
             int intermediateRank = getRank() + (i * rankDirection );
             int intermediateFile = getFile() + (i * fileDirection);
             if ( !(board[intermediateRank][intermediateFile] instanceof EmptySquare)){
-                System.out.println("No Empty Square at Rank: " + intermediateRank + " File: " + intermediateFile);
+                //System.out.println("No Empty Square at Rank: " + intermediateRank + " File: " + intermediateFile);
                 return false;
             }
         }
         return true;
     }
     public boolean rookIsValidMove(int newRank, int newFile, Piece[][] board){
-        System.out.println("rook isValidMove");
+       // System.out.println("rook isValidMove");
         int step = 0;
             //vertical move
         if ((getFile() == newFile) && (getRank() != newRank)){
-            System.out.println("Rook vertical");
+           // System.out.println("Rook vertical");
             if(getRank() > newRank){
                 step = -1;
             }
@@ -145,7 +151,7 @@ public class Queen extends Piece {
             }
             for (int i = getRank() + step; i != newRank; i+=step){
                 if( !(board[i][newFile] instanceof EmptySquare)){
-                    System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+              //      System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                     return false;
                 }
             }
@@ -153,7 +159,7 @@ public class Queen extends Piece {
         }
         //horizontal move
         else if( (getRank() == newRank )&& (getFile() != newFile)){
-            System.out.println("Rook horizontal");
+           // System.out.println("Rook horizontal");
             if(getFile() > newFile){
                 step = -1;
             }
@@ -209,7 +215,78 @@ public class Queen extends Piece {
             return 900 + whiteValueAdjustment[getRank()][getFile()];
         }
         return 900 + blackValueAdjustment[getRank()][getFile()];
+    }
+    public List<MoveRequest> getPossibleMoves(Piece[][]board){
+        List<MoveRequest> moves = new ArrayList<>();
+        moves = getPossibleRookMoves(board);
+        moves.addAll(getPossibleBishopMoves(board));
+        return moves;
 
+    }
+    public List<MoveRequest> getPossibleRookMoves(Piece[][] board){
+        List<MoveRequest> moves = new ArrayList<>();
+        int[] dRank = {1,-1,0,0};
+        int[] dFile = {0,0,1,-1};
+        
+        for (int i = 0; i < 4; i++){
+            int newRank = getRank() + dRank[i];
+            int newFile = getFile() + dFile[i];
+            boolean canContinue = true;
+            while(canContinue){
+                if(outOfBounds(newRank, newFile)){
+                    canContinue = false;
+                }
+                else if( board[newRank][newFile] instanceof EmptySquare){
+                    if(isValidMove(newRank, newFile, board)){
+                        moves.add(new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    }
+                    else{
+                        canContinue = false;
+                    }
+                }
+                else if (isValidCapture(newRank, newFile, board)){
+                    moves.add( new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    canContinue = false;
+                }
+                newRank = newRank + dRank[i];
+                newFile = newFile + dFile[i];
+            }
+        }
+        return moves;
+    }
+    public List<MoveRequest> getPossibleBishopMoves(Piece[][] board){
+        List<MoveRequest> moves = new ArrayList<>();
+        int[] dRank = {1,1,-1,-1};
+        int[] dFile = {1,-1,1,-1};
+        for(int i = 0; i < 4; i++){
+
+            int newRank = getRank() + dRank[i];
+            int newFile = getFile() + dFile[i];
+            boolean canContinue = true;
+            while (canContinue){
+                if(outOfBounds(newRank,newFile)){
+                    canContinue = false;
+                    continue;
+                }
+                if(board[newRank][newFile] instanceof EmptySquare){
+                    if(isValidMove(newRank, newFile, board)){
+                        moves.add(new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    }
+                    else{
+                        canContinue = false;
+                    }
+                }
+                else{
+                    if(isValidCapture(newRank, newFile, board)){
+                        moves.add(new MoveRequest(getRank(), getFile(), newRank, newFile));
+                    }
+                    canContinue = false;
+                }
+                newRank = newRank + dRank[i];
+                newFile = newFile + dFile[i];
+            }
+        }
+        return moves;
     }
     
 }

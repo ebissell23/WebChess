@@ -9,11 +9,11 @@ public class EnPassantExplorerAI {
 
     public int evaluate(Chessboard board){
         
-      //  int whiteMaterial = materialScore(board.getBoard(),true);
-        //int blackMaterial = materialScore(board.getBoard(),false);
-      //  System.out.print("White: " + whiteMaterial);
-     //   System.out.println(" Black: " + blackMaterial);
-     //   System.out.println("Eval: " + (whiteMaterial - blackMaterial));
+        int whiteMaterial = materialScore(board.getBoard(),true);
+        int blackMaterial = materialScore(board.getBoard(),false);
+        System.out.print("White: " + whiteMaterial);
+        System.out.println(" Black: " + blackMaterial);
+        System.out.println("Eval: " + (whiteMaterial - blackMaterial));
         miniMax(board, 1);
         return -1;
       //  return whiteMaterial - blackMaterial;
@@ -33,9 +33,9 @@ public class EnPassantExplorerAI {
     public int miniMax(Chessboard board, int depth){
         List<MoveRequest> moves = board.possibleMoves();
         System.out.println("moves.size(): " + moves.size());
-        for(int i = 0; i < moves.size(); i++){
+      /*   for(int i = 0; i < moves.size(); i++){
             //moves.get(i).printMove();
-        }
+        } */
 
         return -1;
     }

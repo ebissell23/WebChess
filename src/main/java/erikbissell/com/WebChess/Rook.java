@@ -11,11 +11,11 @@ public class Rook extends Piece {
         super.setNickName('R');
     }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
-        System.out.println("rook isValidMove");
+       // System.out.println("rook isValidMove");
         int step = 0;
             //vertical move
         if ((getFile() == newFile) && (getRank() != newRank)){
-            System.out.println("Rook vertical");
+            //System.out.println("Rook vertical");
             if(getRank() > newRank){
                 step = -1;
             }
@@ -24,7 +24,7 @@ public class Rook extends Piece {
             }
             for (int i = getRank() + step; i != newRank; i+=step){
                 if( !(board[i][newFile] instanceof EmptySquare)){
-                    System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                    //System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                     return false;
                 }
             }
@@ -32,7 +32,7 @@ public class Rook extends Piece {
         }
         //horizontal move
         else if( (getRank() == newRank )&& (getFile() != newFile)){
-            System.out.println("Rook horizontal");
+           // System.out.println("Rook horizontal");
             if(getFile() > newFile){
                 step = -1;
             }
@@ -63,17 +63,17 @@ public class Rook extends Piece {
         int rankDifference = newRank - getRank();
         int fileDifference = newFile - getFile();
         if ( (Math.abs(rankDifference) != 0) && (Math.abs(fileDifference) != 0)){ //Can't move both ways 
-            System.out.println("can't move both ways");
+            //System.out.println("can't move both ways");
             return false;
         }
         if( (Math.abs(rankDifference) == 1) | (Math.abs(fileDifference) == 1)){ //only one space away 
-            System.out.println("Capturing one space away");
+           // System.out.println("Capturing one space away");
             return true;
         }
         int step = 0;
         if(fileDifference == 0){
             if ((getFile() == newFile) && (getRank() != newRank)){
-            System.out.println("Rook vertical");
+            //System.out.println("Rook vertical");
             if(getRank() > newRank){
                 step = -1;
             }
@@ -82,7 +82,7 @@ public class Rook extends Piece {
             }
             for (int i = getRank() + step; i != newRank; i+=step){
                 if( !(board[i][newFile] instanceof EmptySquare)){
-                    System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                //    System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                     return false;
                 }
             }
@@ -92,7 +92,7 @@ public class Rook extends Piece {
         }
         else if(rankDifference == 0){
            if ((getFile() == newFile) && (getRank() != newRank)){
-                System.out.println("Rook vertical");
+              //  System.out.println("Rook vertical");
                 if(getRank() > newRank){
                     step = -1;
                 }
@@ -101,7 +101,7 @@ public class Rook extends Piece {
                 }
                 for (int i = getRank() + step; i != newRank; i+=step){
                     if( !(board[i][newFile] instanceof EmptySquare)){
-                        System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                    //    System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                         return false;
                     }
                 }

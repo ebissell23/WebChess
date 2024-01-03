@@ -134,7 +134,7 @@ public class Chessboard {
                // System.out.println(board[i][j].getNickName());
                 if ( (board[i][j].isWhite() == isWhiteTurn()) && (! (board[i][j] instanceof EmptySquare) ) ){
                     List<MoveRequest> pieceMoves = board[i][j].getPossibleMoves(board);
-                    System.out.println("Piece: " + board[i][j].getNickName() + " PieceMoves.size()" + pieceMoves.size());
+                    //System.out.println("Piece: " + board[i][j].getNickName() + " PieceMoves.size()" + pieceMoves.size());
                     for (int k = 0; k < pieceMoves.size(); k++){
                         moves.add(pieceMoves.get(k));
                     }
