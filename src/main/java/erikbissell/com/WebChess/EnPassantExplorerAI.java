@@ -3,6 +3,7 @@ package erikbissell.com.WebChess;
 import java.util.List;
 
 public class EnPassantExplorerAI {
+    int MAX_DEPTH = 2;
     public EnPassantExplorerAI(){
 
     }
@@ -15,9 +16,9 @@ public class EnPassantExplorerAI {
         if(board.blackHasMate()) { return -1000000;}
        // System.out.print("White: " + whiteMaterial);
         //System.out.println(" Black: " + blackMaterial);
-        System.out.println("Eval: " + (whiteMaterial - blackMaterial));
+        //System.out.println("Eval: " + (whiteMaterial - blackMaterial));
         //miniMax(board, 1);
-        return -1;
+        return whiteMaterial - blackMaterial;
       //  return whiteMaterial - blackMaterial;
     }
     public int materialScore(Piece[][] board, boolean isWhite){
@@ -32,19 +33,32 @@ public class EnPassantExplorerAI {
         return materialScore;
     }
 
-    public int miniMax(Chessboard board, int depth){
+    public BestMove miniMax(Chessboard board, int depth){
+        if(depth == 0){
+            return new BestMove(evaluate(board), null);
+        }
         List<MoveRequest> moves = board.possibleMoves();
-        System.out.println("moves.size(): " + moves.size());
-        MoveRequest firstMove = moves.get(0);
-        MoveRequest bestMove = new MoveRequest(-1, -1, -1, -1);
-        int bestScore = 0;
-        Chessboard copyChessboard = new Chessboard(board);
-        copyChessboard.printBoard();
-        firstMove.printMove();
-        copyChessboard.movePiece(firstMove.getSourceRow(),firstMove.getSourceCol(),firstMove.getDestRow(),firstMove.getDestCol());
-        evaluate(copyChessboard);
-        copyChessboard.printBoard();
-        return -1;
+        BestMove bestMove = null;
+    
+        for (int i = 0; i < moves.size(); i++){
+            Chessboard copyChessboard = new Chessboard(board);
+            MoveRequest move = moves.get(i);
+            copyChessboard.movePiece(move.getSourceRow(),move.getSourceCol(), move.getDestRow(), move.getDestCol());
+            int moveScore = miniMax(copyChessboard, depth - 1).getScore();
+            if(copyChessboard.isWhiteTurn()){
+                if(bestMove == null || moveScore < bestMove.getScore()){
+                    bestMove = new BestMove(moveScore, move);
+                   // bestMove.getMove().printMove();
+                }
+            }
+            else{
+                if(bestMove == null || moveScore > bestMove.getScore()){
+                    bestMove = new BestMove(moveScore, move);
+                   // bestMove.getMove().printMove();
+                }
+            }
+        }
+        return bestMove;
     }
     
 }

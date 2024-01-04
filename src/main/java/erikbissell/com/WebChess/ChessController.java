@@ -41,8 +41,20 @@ public class ChessController {
         try {
           if(chessboard.movePiece(sourceRow, sourceCol, destRow, destCol)){
            // System.out.println("move piece true");
-           System.out.println("calling minimax");
-            engine.miniMax(chessboard,1);
+            BestMove bestMove = engine.miniMax(chessboard,3);
+            if(bestMove != null && bestMove.getMove() != null){
+              if(chessboard.movePiece(bestMove.getMove().getSourceRow(), bestMove.getMove().getSourceCol(), bestMove.getMove().getDestRow(), bestMove.getMove().getDestCol())){
+
+              } 
+              else{
+                return ResponseEntity.badRequest().body("Invalid Computer Move");
+              } 
+              //bestMove.getMove().printMove();
+            }
+            else{
+              System.out.println("bestmove is null");
+            }
+           
             return ResponseEntity.ok("Success");
           }
           else{

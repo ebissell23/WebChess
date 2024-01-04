@@ -125,7 +125,7 @@ public class Chessboard {
             if(board[sourceRow][sourceCol].isWhite() == board[destRow][destCol].isWhite()){
                 return false;
             }
-            System.out.println("Calling Capture");
+            //System.out.println("Calling Capture");
             if(board[sourceRow][sourceCol].capture(destRow,destCol,board)){
                 if(board[destRow][destCol] instanceof King){
                     System.out.println("GameOver!");
@@ -140,7 +140,7 @@ public class Chessboard {
                 return true;
             }
             else{
-                System.out.println("can't make that capture");
+                //System.out.println("can't make that capture");
                 return false;
             }
         }
@@ -162,7 +162,7 @@ public class Chessboard {
     public List<MoveRequest> possibleMoves(){
         List<MoveRequest> moves = new ArrayList<>();
         //iterate through each piece. Add its possible moves to the list of possible moves
-        System.out.println("\n isWhiteTurn = " + isWhiteTurn());
+        //System.out.println("\n isWhiteTurn = " + isWhiteTurn());
         for(int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){
                // System.out.println(board[i][j].getNickName());
