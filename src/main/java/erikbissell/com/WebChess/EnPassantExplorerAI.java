@@ -39,8 +39,11 @@ public class EnPassantExplorerAI {
         MoveRequest bestMove = new MoveRequest(-1, -1, -1, -1);
         int bestScore = 0;
         Chessboard copyChessboard = new Chessboard(board);
+        copyChessboard.printBoard();
+        firstMove.printMove();
         copyChessboard.movePiece(firstMove.getSourceRow(),firstMove.getSourceCol(),firstMove.getDestRow(),firstMove.getDestCol());
         evaluate(copyChessboard);
+        copyChessboard.printBoard();
         return -1;
     }
     

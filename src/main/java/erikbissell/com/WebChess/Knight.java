@@ -14,7 +14,10 @@ public class Knight extends Piece {
         super.setNickName('N');
     }
     public Knight(Knight otherKnight){
-        
+        setFile(otherKnight.getFile());
+        setRank(otherKnight.getRank());
+        setColor(otherKnight.isWhite());
+        setNickName('N');
     }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
         int dRank[] = {1,1,-1,-1,2,2,-2,-2};

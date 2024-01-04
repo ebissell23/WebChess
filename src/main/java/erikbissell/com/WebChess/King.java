@@ -11,7 +11,10 @@ public class King extends Piece {
         super.setNickName('K');
     }
     public King(King otherKing){
-        
+        setFile(otherKing.getFile());
+        setRank(otherKing.getRank());
+        setColor(otherKing.isWhite());
+        setNickName('K');
     }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
         if(outOfBounds(newRank, newFile)){

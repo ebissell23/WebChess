@@ -11,11 +11,14 @@ public class Bishop extends Piece{
 
     }
     public Bishop(Bishop otherBishop){
-
+        setFile(otherBishop.getFile());
+        setRank(otherBishop.getRank());
+        setColor(otherBishop.isWhite());
+        setNickName('B');
     }
     public Bishop (int initialRank, int initialFile, boolean isWhite){
         super(initialRank, initialFile, isWhite);
-       super.setNickName('B');
+        super.setNickName('B');
 
 
     }

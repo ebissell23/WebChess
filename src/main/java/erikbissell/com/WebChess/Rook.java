@@ -11,7 +11,10 @@ public class Rook extends Piece {
         super.setNickName('R');
     }
     public Rook(Rook otherRook){
-        
+        setFile(otherRook.getFile());
+        setRank(otherRook.getRank());
+        setColor(otherRook.isWhite());
+        setNickName('R');
     }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
        // System.out.println("rook isValidMove");

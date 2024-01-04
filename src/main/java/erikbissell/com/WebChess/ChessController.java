@@ -41,6 +41,7 @@ public class ChessController {
         try {
           if(chessboard.movePiece(sourceRow, sourceCol, destRow, destCol)){
            // System.out.println("move piece true");
+           System.out.println("calling minimax");
             engine.miniMax(chessboard,1);
             return ResponseEntity.ok("Success");
           }

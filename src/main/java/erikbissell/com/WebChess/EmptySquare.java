@@ -8,7 +8,10 @@ public class EmptySquare extends Piece {
         setNickName('-');
     }
     public EmptySquare(EmptySquare otherEmptySquare){
-
+        setFile(otherEmptySquare.getFile());
+        setRank(otherEmptySquare.getRank());
+        setColor(otherEmptySquare.isWhite());
+        setNickName('-');
     }
 
     @Override

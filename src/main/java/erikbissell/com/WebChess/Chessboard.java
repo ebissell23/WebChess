@@ -18,12 +18,11 @@ public class Chessboard {
     }
     public Chessboard(Chessboard otherBoard){
         Piece[][] copyOfBoard = otherBoard.getBoard();
+        isWhiteTurn = otherBoard.isWhiteTurn();
         board = new Piece[8][8];
         for (int i = 0; i < 8; i++){
             for ( int j = 0; j < 8; j++){
-                if(!(copyOfBoard[i][j] instanceof EmptySquare )){
                     board[i][j] = getCopyOfPiece(copyOfBoard[i][j]);
-                }
             }
         }
     }
@@ -91,7 +90,7 @@ public class Chessboard {
     }
     public boolean movePiece(int sourceRow, int sourceCol, int destRow, int destCol){
         //System.out.println("Eval before move: ");
-        engine.evaluate(this);
+        //engine.evaluate(this);
        // List<MoveRequest> moves = board[sourceRow][sourceCol].getPossibleMoves(board);
         //for(int i = 0; i < moves.size(); i++){
           //  moves.get(i).printMove();
@@ -106,7 +105,7 @@ public class Chessboard {
         }
         //Destination is Empty, try to move. Piece handles if allowed
         if(board[destRow][destCol] instanceof EmptySquare){
-            System.out.println("Calling Move");
+           // System.out.println("Calling Move");
             if(board[sourceRow][sourceCol].move(destRow,destCol,board)){
                 board[destRow][destCol] = board[sourceRow][sourceCol];
                 board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
@@ -116,7 +115,7 @@ public class Chessboard {
                 return true;
             }
             else{
-                System.out.println("can't make that move");
+               // System.out.println("can't make that move");
                 return false;
             }
         }

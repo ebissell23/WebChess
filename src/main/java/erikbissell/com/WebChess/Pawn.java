@@ -12,7 +12,10 @@ public class Pawn extends Piece {
         super.setNickName('P');
     }
     public Pawn(Pawn otherPawn){
-        
+        setFile(otherPawn.getFile());
+        setRank(otherPawn.getRank());
+        setColor(otherPawn.isWhite());
+        setNickName('P');
     }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
         if( ! (board[newRank][newFile] instanceof EmptySquare)){
