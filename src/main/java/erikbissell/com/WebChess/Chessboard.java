@@ -16,6 +16,41 @@ public class Chessboard {
         initializeEmptyBoard();
         initializeStartingBoard();
     }
+    public Chessboard(Chessboard otherBoard){
+        Piece[][] copyOfBoard = otherBoard.getBoard();
+        board = new Piece[8][8];
+        for (int i = 0; i < 8; i++){
+            for ( int j = 0; j < 8; j++){
+                if(!(copyOfBoard[i][j] instanceof EmptySquare )){
+                    board[i][j] = getCopyOfPiece(copyOfBoard[i][j]);
+                }
+            }
+        }
+    }
+    public Piece getCopyOfPiece(Piece piece){
+        
+        if(piece instanceof Pawn){
+            return new Pawn((Pawn)piece);
+        }
+        else if(piece instanceof Rook){
+            return new Rook((Rook)piece);
+        }
+        else if(piece instanceof Bishop){
+            return new Bishop((Bishop)piece);
+        }
+        else if(piece instanceof Knight){
+            return new Knight((Knight)piece);
+        }
+        else if(piece instanceof King){
+            return new King((King)piece);
+        }
+        else if(piece instanceof Queen){
+            return new Queen((Queen)piece);
+        }
+        else{ //its an emptySquare
+            return new EmptySquare((EmptySquare)piece);
+        }
+    }
     public void initializeEmptyBoard(){
         for (int rank = 0; rank < 8; rank++){
             for (int file = 0; file < 8; file++){
@@ -144,6 +179,14 @@ public class Chessboard {
         }
 
         return moves;
+    }
+    public boolean whiteHasMate(){
+        //TODO: check to see if black has a king
+        return false;
+    }
+    public boolean blackHasMate(){
+        //TODO check to see if white has a king
+        return false;
     }
     public void printBoard(){
         for (int i = 0; i < 8; i ++){

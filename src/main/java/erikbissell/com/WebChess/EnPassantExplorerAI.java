@@ -11,10 +11,12 @@ public class EnPassantExplorerAI {
         
         int whiteMaterial = materialScore(board.getBoard(),true);
         int blackMaterial = materialScore(board.getBoard(),false);
-        System.out.print("White: " + whiteMaterial);
-        System.out.println(" Black: " + blackMaterial);
+        if(board.whiteHasMate()) { return 1000000;}
+        if(board.blackHasMate()) { return -1000000;}
+       // System.out.print("White: " + whiteMaterial);
+        //System.out.println(" Black: " + blackMaterial);
         System.out.println("Eval: " + (whiteMaterial - blackMaterial));
-        miniMax(board, 1);
+        //miniMax(board, 1);
         return -1;
       //  return whiteMaterial - blackMaterial;
     }
@@ -33,11 +35,26 @@ public class EnPassantExplorerAI {
     public int miniMax(Chessboard board, int depth){
         List<MoveRequest> moves = board.possibleMoves();
         System.out.println("moves.size(): " + moves.size());
-      /*   for(int i = 0; i < moves.size(); i++){
-            //moves.get(i).printMove();
-        } */
-
+        MoveRequest firstMove = moves.get(0);
+        MoveRequest bestMove = new MoveRequest(-1, -1, -1, -1);
+        int bestScore = 0;
+        Chessboard copyChessboard = new Chessboard(board);
+        copyChessboard.movePiece(firstMove.getSourceRow(),firstMove.getSourceCol(),firstMove.getDestRow(),firstMove.getDestCol());
+        evaluate(copyChessboard);
         return -1;
     }
+    
 }
 
+/*if(copiedBoard.isWhiteTurn()){
+                if(thisMoveScore > bestScore){
+                    bestScore = thisMoveScore;
+                    bestMove = move;
+                }
+            }
+            else{
+                if(thisMoveScore < bestScore){
+                    bestScore = thisMoveScore;
+                    bestMove = move;
+                }
+            } */

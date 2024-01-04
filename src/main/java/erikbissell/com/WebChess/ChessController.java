@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ChessController {
    
     private Chessboard chessboard;
+    private EnPassantExplorerAI engine = new EnPassantExplorerAI();
     public ChessController(){
         this.chessboard = new Chessboard();
     }
@@ -32,14 +33,15 @@ public class ChessController {
     }
     @PostMapping("/move")
     public ResponseEntity<String> movePiece(@RequestBody MoveRequest moveRequest) {
-      System.out.println("made it to movePiece java");
+    //  System.out.println("made it to movePiece java");
       int sourceRow = moveRequest.getSourceRow();
       int sourceCol = moveRequest.getSourceCol();
       int destRow = moveRequest.getDestRow();
       int destCol = moveRequest.getDestCol();
         try {
           if(chessboard.movePiece(sourceRow, sourceCol, destRow, destCol)){
-            System.out.println("move piece true");
+           // System.out.println("move piece true");
+            engine.miniMax(chessboard,1);
             return ResponseEntity.ok("Success");
           }
           else{

@@ -10,6 +10,9 @@ public class Bishop extends Piece{
     public Bishop(){
 
     }
+    public Bishop(Bishop otherBishop){
+
+    }
     public Bishop (int initialRank, int initialFile, boolean isWhite){
         super(initialRank, initialFile, isWhite);
        super.setNickName('B');

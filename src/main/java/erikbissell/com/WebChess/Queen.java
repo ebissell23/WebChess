@@ -8,6 +8,9 @@ public class Queen extends Piece {
         super(initialRank, initialFile, isWhite);
         super.setNickName('Q');
     }
+    public Queen(Queen otherQueen){
+        
+    }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
         if((bishopIsValidMove(newRank, newFile, board))||(rookIsValidMove(newRank,newFile,board))){
             return true;

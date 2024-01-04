@@ -7,6 +7,9 @@ public class EmptySquare extends Piece {
         setFile(file);
         setNickName('-');
     }
+    public EmptySquare(EmptySquare otherEmptySquare){
+
+    }
 
     @Override
     public boolean isValidMove(int newRank, int newFile, Piece[][] board) {

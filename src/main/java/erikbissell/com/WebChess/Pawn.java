@@ -10,8 +10,9 @@ public class Pawn extends Piece {
     public Pawn (int initialRank, int initialFile, boolean isWhite){
         super(initialRank, initialFile, isWhite);
         super.setNickName('P');
-
-
+    }
+    public Pawn(Pawn otherPawn){
+        
     }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
         if( ! (board[newRank][newFile] instanceof EmptySquare)){

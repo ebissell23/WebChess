@@ -10,6 +10,9 @@ public class Rook extends Piece {
         super(initialRank, initialFile, isWhite);
         super.setNickName('R');
     }
+    public Rook(Rook otherRook){
+        
+    }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
        // System.out.println("rook isValidMove");
         int step = 0;

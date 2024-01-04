@@ -9,8 +9,9 @@ public class King extends Piece {
     public King (int initialRank, int initialFile, boolean isWhite){
         super(initialRank, initialFile, isWhite);
         super.setNickName('K');
-
-
+    }
+    public King(King otherKing){
+        
     }
     public boolean isValidMove(int newRank, int newFile, Piece[][] board){
         if(outOfBounds(newRank, newFile)){
