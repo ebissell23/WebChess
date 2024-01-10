@@ -52,7 +52,7 @@ public class Rook extends Piece {
             }
             return true;
         }
-        return false;
+        return true;
     }
     public boolean move(int newRank, int newFile, Piece[][] board){
         if(isValidMove(newRank, newFile, board)){

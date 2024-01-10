@@ -58,6 +58,8 @@ public class EnPassantExplorerAI {
                 }
             }
         }
+        bestMove.getMove().printMove();
+       //System.out.println(bestMove.getScore());
         return bestMove;
     }
     

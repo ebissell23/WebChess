@@ -10,7 +10,8 @@ public class Chessboard {
     private Piece[][] board;
     private boolean isWhiteTurn = true;
     private EnPassantExplorerAI engine = new EnPassantExplorerAI();
-    ArrayList<MoveRequest> moveList = new ArrayList<MoveRequest>();
+    private ArrayList<MoveRequest> moveList = new ArrayList<MoveRequest>();
+    
     public Chessboard(){
         board = new Piece[8][8];
         initializeEmptyBoard();
@@ -24,6 +25,13 @@ public class Chessboard {
             for ( int j = 0; j < 8; j++){
                     board[i][j] = getCopyOfPiece(copyOfBoard[i][j]);
             }
+        }
+    }
+    public void checkLastMove(){
+        
+        boolean kingCaptured = moveList.get(moveList.size() -1).checkCapturedKing();
+        if(kingCaptured){
+            gameOver();
         }
     }
     public Piece getCopyOfPiece(Piece piece){
@@ -59,14 +67,14 @@ public class Chessboard {
     }
     public void initializeStartingBoard(){
         //Black Major and Minor Pieces
-        board[0][0] = new Rook(0, 0, false);
-        board[0][1] = new Knight(0, 1, false);
-        board[0][2] = new Bishop(0, 2, false);
-        board[0][3] = new Queen(0, 3, false);
+       // board[0][0] = new Rook(0, 0, false);
+        //board[0][1] = new Knight(0, 1, false);
+        //board[0][2] = new Bishop(0, 2, false);
+        //board[0][3] = new Queen(0, 3, false);
         board[0][4] = new King(0, 4, false);
-        board[0][5] = new Bishop(0, 5, false);
-        board[0][6] = new Knight(0, 6, false);
-        board[0][7] = new Rook(0, 7, false);
+        //board[0][5] = new Bishop(0, 5, false);
+        //board[0][6] = new Knight(0, 6, false);
+        //board[0][7] = new Rook(0, 7, false);
         //Black Pawns
         for (int j = 0; j < 8; j++) {
             board[1][j] = new Pawn(1, j, false);
@@ -129,7 +137,12 @@ public class Chessboard {
             if(board[sourceRow][sourceCol].capture(destRow,destCol,board)){
                 if(board[destRow][destCol] instanceof King){
                     System.out.println("GameOver!");
-                    gameOver();
+                    board[destRow][destCol] = board[sourceRow][sourceCol];
+                    board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
+                    moveList.add(new MoveRequest(sourceRow, sourceCol, destRow, destCol));
+                    moveList.get(moveList.size() - 1).setCaptureKing(true);
+                    changeTurn();
+                    //gameOver();
                     return true;
                 }
                 board[destRow][destCol] = board[sourceRow][sourceCol];
@@ -146,6 +159,7 @@ public class Chessboard {
         }
     }
     public void gameOver(){
+        System.out.println("Game Over!");
         initializeEmptyBoard();
         initializeStartingBoard();
 
@@ -180,12 +194,26 @@ public class Chessboard {
         return moves;
     }
     public boolean whiteHasMate(){
-        //TODO: check to see if black has a king
-        return false;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if( (board[i][j] instanceof King) && (board[i][j].isWhite() == false) ){
+                    return false;
+                }
+            }
+        }
+        System.out.println("whiteHasMate");
+        return true;
     }
     public boolean blackHasMate(){
-        //TODO check to see if white has a king
-        return false;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if( (board[i][j] instanceof King) && (board[i][j].isWhite() ) ){
+                    return false;
+                }
+            }
+        }
+        System.out.println("black has mate");
+        return true;
     }
     public void printBoard(){
         for (int i = 0; i < 8; i ++){

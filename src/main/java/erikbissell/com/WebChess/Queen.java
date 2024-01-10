@@ -45,6 +45,7 @@ public class Queen extends Piece {
     }
 
     public boolean rookIsValidCapture(int newRank,int newFile, Piece [][]board){
+        //System.out.println("Queen is valid capture. via rook");
         if(board[newRank][newFile].isWhite() == isWhite()){
             return false;
         }
@@ -61,7 +62,7 @@ public class Queen extends Piece {
         int step = 0;
         if(fileDifference == 0){
             if ((getFile() == newFile) && (getRank() != newRank)){
-              //  System.out.println("Rook vertical");
+                //System.out.println("Rook vertical");
                 if(getRank() > newRank){
                     step = -1;
                 }
@@ -70,7 +71,7 @@ public class Queen extends Piece {
                 }
                 for (int i = getRank() + step; i != newRank; i+=step){
                     if( !(board[i][newFile] instanceof EmptySquare)){
-                      //  System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                        //System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                         return false;
                     }
                 }
@@ -80,7 +81,7 @@ public class Queen extends Piece {
         }
         else if(rankDifference == 0){
            if ((getFile() == newFile) && (getRank() != newRank)){
-               // System.out.println("Rook vertical");
+                //System.out.println("Rook vertical");
                 if(getRank() > newRank){
                     step = -1;
                 }
@@ -89,14 +90,14 @@ public class Queen extends Piece {
                 }
                 for (int i = getRank() + step; i != newRank; i+=step){
                     if( !(board[i][newFile] instanceof EmptySquare)){
-                       // System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                        //System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                         return false;
                     }
                 }
                 return true;
             }
         }
-        return false;
+        return true;
     }
     public boolean bishopIsValidMove(int newRank, int newFile, Piece[][] board){
         int rankDifference = Math.abs(newRank - getRank());
