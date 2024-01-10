@@ -56,48 +56,49 @@ public class Queen extends Piece {
             return false;
         }
         if( (Math.abs(rankDifference) == 1) | (Math.abs(fileDifference) == 1)){ //only one space away 
-            //System.out.println("Capturing one space away");
+           // System.out.println("Capturing one space away");
             return true;
         }
         int step = 0;
         if(fileDifference == 0){
             if ((getFile() == newFile) && (getRank() != newRank)){
-                //System.out.println("Rook vertical");
-                if(getRank() > newRank){
-                    step = -1;
-                }
-                else{
-                    step = 1;
-                }
-                for (int i = getRank() + step; i != newRank; i+=step){
-                    if( !(board[i][newFile] instanceof EmptySquare)){
-                        //System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
-                        return false;
-                    }
-                }
-                return true;
+            //System.out.println("Rook vertical capture");
+            if(getRank() > newRank){
+                step = -1;
             }
+            else{
+                step = 1;
+            }
+            for (int i = getRank() + step; i != newRank; i+=step){
+                if( !(board[i][newFile] instanceof EmptySquare)){
+                //    System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                    return false;
+                }
+            }
+            return true;
+        }
 
         }
         else if(rankDifference == 0){
-           if ((getFile() == newFile) && (getRank() != newRank)){
-                //System.out.println("Rook vertical");
-                if(getRank() > newRank){
+           if ((getRank() == newRank) && (getFile() != newFile)){
+                //System.out.println("Rook horizontal capture");
+                if(getFile() > newFile){
                     step = -1;
                 }
                 else{
                     step = 1;
                 }
-                for (int i = getRank() + step; i != newRank; i+=step){
-                    if( !(board[i][newFile] instanceof EmptySquare)){
-                        //System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
+                for (int i = getFile() + step; i != newFile; i+=step){
+                    if( !(board[newRank][i] instanceof EmptySquare)){
+                    //    System.out.println("Not an empty square at : i: " + i + " newFile: " +newFile );
                         return false;
                     }
                 }
                 return true;
             }
         }
-        return true;
+
+        return false;
     }
     public boolean bishopIsValidMove(int newRank, int newFile, Piece[][] board){
         int rankDifference = Math.abs(newRank - getRank());

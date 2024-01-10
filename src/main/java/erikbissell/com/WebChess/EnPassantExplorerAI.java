@@ -58,22 +58,9 @@ public class EnPassantExplorerAI {
                 }
             }
         }
-        bestMove.getMove().printMove();
+        //bestMove.getMove().printMove();
        //System.out.println(bestMove.getScore());
         return bestMove;
     }
     
 }
-
-/*if(copiedBoard.isWhiteTurn()){
-                if(thisMoveScore > bestScore){
-                    bestScore = thisMoveScore;
-                    bestMove = move;
-                }
-            }
-            else{
-                if(thisMoveScore < bestScore){
-                    bestScore = thisMoveScore;
-                    bestMove = move;
-                }
-            } */
