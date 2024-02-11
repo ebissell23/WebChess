@@ -48,19 +48,42 @@ public class EnPassantExplorerAI {
             if(copyChessboard.isWhiteTurn()){
                 if(bestMove == null || moveScore < bestMove.getScore()){
                     bestMove = new BestMove(moveScore, move);
-                   // bestMove.getMove().printMove();
                 }
             }
             else{
                 if(bestMove == null || moveScore > bestMove.getScore()){
                     bestMove = new BestMove(moveScore, move);
-                   // bestMove.getMove().printMove();
                 }
             }
         }
-        //bestMove.getMove().printMove();
-       //System.out.println(bestMove.getScore());
         return bestMove;
+    }
+    public BestMove miniMaxPruned(Chessboard board, int depth, int alpha, int beta){
+        if(depth == 0){
+            return new BestMove(evaluate(board), null);
+        }
+        List<MoveRequest> moves = board.possibleMoves();
+        BestMove bestMove = null;
+    
+        for (int i = 0; i < moves.size(); i++){
+            Chessboard copyChessboard = new Chessboard(board);
+            MoveRequest move = moves.get(i);
+            copyChessboard.movePiece(move.getSourceRow(),move.getSourceCol(), move.getDestRow(), move.getDestCol());
+            int moveScore = miniMax(copyChessboard, depth - 1).getScore();
+            if(copyChessboard.isWhiteTurn()){
+                if(bestMove == null || moveScore < bestMove.getScore()){
+                    bestMove = new BestMove(moveScore, move);
+                }
+            }
+            else{
+                if(bestMove == null || moveScore > bestMove.getScore()){
+                    bestMove = new BestMove(moveScore, move);
+                }
+            }
+        }
+        return bestMove;
+
+
     }
     
 }

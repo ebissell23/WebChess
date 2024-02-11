@@ -41,8 +41,8 @@ public class ChessController {
         try {
           if(chessboard.movePiece(sourceRow, sourceCol, destRow, destCol)){
             chessboard.checkLastMove();
-            //BestMove bestMove = engine.miniMax(chessboard,3);
-            /* if(bestMove != null && bestMove.getMove() != null){
+            BestMove bestMove = engine.miniMax(chessboard,3);
+             if(bestMove != null && bestMove.getMove() != null){
               if(chessboard.movePiece(bestMove.getMove().getSourceRow(), bestMove.getMove().getSourceCol(), bestMove.getMove().getDestRow(), bestMove.getMove().getDestCol())){
                 chessboard.checkLastMove();
               } 
@@ -53,7 +53,7 @@ public class ChessController {
             }
             else{
               System.out.println("bestmove is null");
-            }  */
+            }  
            
             return ResponseEntity.ok("Success");
           }
