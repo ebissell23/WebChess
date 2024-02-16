@@ -12,30 +12,35 @@ public class Chessboard {
     private EnPassantExplorerAI engine = new EnPassantExplorerAI();
     private ArrayList<MoveRequest> moveList = new ArrayList<MoveRequest>();
     
+    //standard starting setup
     public Chessboard(){
         board = new Piece[8][8];
         initializeEmptyBoard();
         initializeStartingBoard();
     }
+    //used for chess engine so it doesnt change gameboard when it is evaluating positions
     public Chessboard(Chessboard otherBoard){
         Piece[][] copyOfBoard = otherBoard.getBoard();
         isWhiteTurn = otherBoard.isWhiteTurn();
         board = new Piece[8][8];
+        //iterate through board and make copy of pieces so gameboard doesn't change when engine evaluates moves
         for (int i = 0; i < 8; i++){
             for ( int j = 0; j < 8; j++){
                     board[i][j] = getCopyOfPiece(copyOfBoard[i][j]);
             }
         }
     }
+
     public void checkLastMove(){
-        
+        //checks if last move was capturing the king
+        //Can't end the game once it is captured because engine would end the game when it finds a king capture
         boolean kingCaptured = moveList.get(moveList.size() -1).checkCapturedKing();
         if(kingCaptured){
             gameOver();
         }
     }
+
     public Piece getCopyOfPiece(Piece piece){
-        
         if(piece instanceof Pawn){
             return new Pawn((Pawn)piece);
         }
@@ -58,6 +63,7 @@ public class Chessboard {
             return new EmptySquare((EmptySquare)piece);
         }
     }
+
     public void initializeEmptyBoard(){
         for (int rank = 0; rank < 8; rank++){
             for (int file = 0; file < 8; file++){
@@ -65,6 +71,7 @@ public class Chessboard {
             }
         }
     }
+
     public void initializeStartingBoard(){
         //Black Major and Minor Pieces
         board[0][0] = new Rook(0, 0, false);
@@ -93,106 +100,98 @@ public class Chessboard {
             board[6][j] = new Pawn(6, j, true);
         }   
     }
+
     public Piece[][] getBoard(){
         return board;
     }
+    
     public boolean movePiece(int sourceRow, int sourceCol, int destRow, int destCol){
-        //System.out.println("Eval before move: ");
-        //engine.evaluate(this);
-       // List<MoveRequest> moves = board[sourceRow][sourceCol].getPossibleMoves(board);
-        //for(int i = 0; i < moves.size(); i++){
-          //  moves.get(i).printMove();
-       // }
-        //TODO: check for en passant
+        
+        //En passant is a forced move. Check if it is available 
         if(checkEnPassant(sourceRow, sourceCol, destRow, destCol)){
-
+            //TODO: enforce en passant
         }
-
+        //can't stay in the same place
         if( (sourceCol == destCol) && (sourceRow == destRow)){
             return false;
         }
-        //Destination is Empty, try to move. Piece handles if allowed
+        //Destination is Empty, try to move. Piece handles if allowed 
         if(board[destRow][destCol] instanceof EmptySquare){
-           // System.out.println("Calling Move");
             if(board[sourceRow][sourceCol].move(destRow,destCol,board)){
+                //updates board, adds move to moveList, changes turn. 
                 board[destRow][destCol] = board[sourceRow][sourceCol];
                 board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
                 moveList.add(new MoveRequest(sourceRow, sourceCol, destRow, destCol));
-                //engine.evaluate(this);
                 changeTurn();
                 return true;
             }
             else{
-               // System.out.println("can't make that move");
                 return false;
             }
         }
         else{ //destination isn't empty, try to capture. Piece handles if allowed
             //can't capture own piece
-            
             if(board[sourceRow][sourceCol].isWhite() == board[destRow][destCol].isWhite()){
                 return false;
             }
-            //System.out.println("Calling Capture");
             if(board[sourceRow][sourceCol].capture(destRow,destCol,board)){
+                //special handler for a king capture which can end a game
                 if(board[destRow][destCol] instanceof King){
-                    System.out.println("GameOver!");
                     board[destRow][destCol] = board[sourceRow][sourceCol];
                     board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
                     moveList.add(new MoveRequest(sourceRow, sourceCol, destRow, destCol));
                     moveList.get(moveList.size() - 1).setCaptureKing(true);
                     changeTurn();
-                    //gameOver();
                     return true;
                 }
                 board[destRow][destCol] = board[sourceRow][sourceCol];
                 board[sourceRow][sourceCol] = new EmptySquare(sourceRow,sourceCol);
                 moveList.add(new MoveRequest(sourceRow, sourceCol, destRow, destCol));
-                //engine.evaluate(this);
                 changeTurn();
                 return true;
             }
             else{
-                //System.out.println("can't make that capture");
                 return false;
             }
         }
     }
+    //gives us a fresh game board
     public void gameOver(){
-        System.out.println("Game Over!");
         initializeEmptyBoard();
         initializeStartingBoard();
-
     }
+
     public void changeTurn(){
         isWhiteTurn = !isWhiteTurn;
     }
+
     public boolean isWhiteTurn(){
         return isWhiteTurn;
     }
+
     public boolean checkEnPassant(int sourceRow, int sourceCol, int destRow, int destCol){
+        //TODO: implement 
+        //check move list to see if last move was a 2 postition pawn move  
         return false;
     }
+
     public List<MoveRequest> possibleMoves(){
         List<MoveRequest> moves = new ArrayList<>();
         //iterate through each piece. Add its possible moves to the list of possible moves
-        //System.out.println("\n isWhiteTurn = " + isWhiteTurn());
         for(int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){
-               // System.out.println(board[i][j].getNickName());
                 if ( (board[i][j].isWhite() == isWhiteTurn()) && (! (board[i][j] instanceof EmptySquare) ) ){
                     List<MoveRequest> pieceMoves = board[i][j].getPossibleMoves(board);
-                    //System.out.println("Piece: " + board[i][j].getNickName() + " PieceMoves.size()" + pieceMoves.size());
                     for (int k = 0; k < pieceMoves.size(); k++){
                         moves.add(pieceMoves.get(k));
                     }
-
                 }
             }
         }
-
         return moves;
     }
+    //engine use only
+    //TODO: add member variable to board -boolean whiteHasMate so we don't need to iterate through the board each time
     public boolean whiteHasMate(){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -201,9 +200,10 @@ public class Chessboard {
                 }
             }
         }
-        System.out.println("whiteHasMate");
         return true;
     }
+    //engine use only
+    //TODO: add member variable to board -boolean whiteHasMate so we don't need to iterate through the board each time
     public boolean blackHasMate(){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -215,6 +215,7 @@ public class Chessboard {
         System.out.println("black has mate");
         return true;
     }
+
     public void printBoard(){
         for (int i = 0; i < 8; i ++){
             for (int j = 0; j < 8; j++){
@@ -222,6 +223,5 @@ public class Chessboard {
             }
             System.out.println();
         }
-
     }
 }
