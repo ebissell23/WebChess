@@ -7,6 +7,7 @@ public class EmptySquare extends Piece {
         setFile(file);
         setNickName('-');
     }
+
     public EmptySquare(EmptySquare otherEmptySquare){
         setFile(otherEmptySquare.getFile());
         setRank(otherEmptySquare.getRank());
@@ -16,30 +17,25 @@ public class EmptySquare extends Piece {
 
     @Override
     public boolean isValidMove(int newRank, int newFile, Piece[][] board) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean move(int newRank, int newFile, Piece[][] board) {
-        // TODO Auto-generated method stub
         return false;
     }
         
     @Override
     public boolean isValidCapture(int newRank, int newFile, Piece[][] board) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean capture(int newRank, int newFile, Piece[][] board) {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public char getNickName(){
         return nickName;
     }
-    
 }
