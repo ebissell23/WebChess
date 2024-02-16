@@ -28,33 +28,35 @@ public class ChessController {
     @GetMapping("/board")
     public Piece[][] getChessboard(){
         Piece[][] chessboardData = chessboard.getBoard();
-        //System.out.println("Chessboard Data: " + Arrays.deepToString(chessboardData));
         return chessboardData;
     }
     @PostMapping("/move")
     public ResponseEntity<String> movePiece(@RequestBody MoveRequest moveRequest) {
-    //  System.out.println("made it to movePiece java");
       int sourceRow = moveRequest.getSourceRow();
       int sourceCol = moveRequest.getSourceCol();
       int destRow = moveRequest.getDestRow();
       int destCol = moveRequest.getDestCol();
+      //TODO: add while loop so user can keep trying moves if their original attempt is invalid.
+      //currently they need to refresh the page to do so
         try {
+          //makes user move
           if(chessboard.movePiece(sourceRow, sourceCol, destRow, destCol)){
-            chessboard.checkLastMove();
+            chessboard.checkLastMove(); //checks last user move for mate
+            //TODO: allow user to set engine depth before the game begins
             BestMove bestMove = engine.miniMax(chessboard,3);
+            //performs engine move
              if(bestMove != null && bestMove.getMove() != null){
               if(chessboard.movePiece(bestMove.getMove().getSourceRow(), bestMove.getMove().getSourceCol(), bestMove.getMove().getDestRow(), bestMove.getMove().getDestCol())){
-                chessboard.checkLastMove();
+                chessboard.checkLastMove(); // checks last engine move for mate
               } 
               else{
                 return ResponseEntity.badRequest().body("Invalid Computer Move");
               } 
-              //bestMove.getMove().printMove();
             }
             else{
+              //TODO: what do we do when engine move is null?
               System.out.println("bestmove is null");
             }  
-           
             return ResponseEntity.ok("Success");
           }
           else{
